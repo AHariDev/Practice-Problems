@@ -4,10 +4,11 @@ class Node {
     constructor(value){
         this.value = value; 
         this.next = null; 
+        this.prev = null;
     }
 }
 
-class LinkedList {
+class DoublyLinkedList {
     constructor (value){
         this.head = new Node(value);
         this.tail = this.head;
@@ -15,14 +16,15 @@ class LinkedList {
     }
     append(value){
        const newNode = new Node(value);
-       this.tail.next = newNode;
-       this.tail = this.tail.next; //Sets the tail to be the new Node
-       this.length++;
-       return this; //Returns the linked list
+       newNode.prev = this.tail; 
+       this.tail.next = newNode; 
+       this.tail = newNode; 
+       this.length++; 
     }
     prepend(value){
         let newNode = new Node(value);
         newNode.next = this.head;
+        this.head.prev = newNode;
         this.head = newNode;
         this.length++; 
     }
@@ -42,7 +44,6 @@ class LinkedList {
         if (index >= 0 && index <= this.length - 1){
             if (index === 0){
                 this.prepend(value);
-                this.length++;
             } else if (index === this.length){
                 this.append(value);
             } else {
@@ -51,7 +52,9 @@ class LinkedList {
                     if (position === index-1){
                         let tempNode = currNode.next;
                         currNode.next = insertNode;
+                        insertNode.prev = currNode; 
                         insertNode.next = tempNode;
+                        tempNode.prev = insertNode;
                         break;
                     }
                     position++; 
@@ -68,12 +71,14 @@ class LinkedList {
         if (index >= 0 && index <= this.length - 1){
             if(index === 0){
                 this.head = this.head.next; 
+                this.head.prev = null;
                 this.length--; 
             } else {
                 this.length--; 
                 while (currNode){
                     if (position === index - 1){
                         currNode.next = currNode.next.next;
+                        currNode.next.prev = currNode;
                         break;  
                     }
                     position++; 
@@ -84,15 +89,11 @@ class LinkedList {
     }
 }
 
-const myLinkedList = new LinkedList(10);
-myLinkedList.insert(1, 4);
-myLinkedList.insert(1, 4);
-myLinkedList.remove(2);
-myLinkedList.remove(1);
+const myLinkedList = new DoublyLinkedList(10);
 myLinkedList.append(5);
-myLinkedList.insert(1, 4);
-myLinkedList.remove(2);
-myLinkedList.insert(1, 4);
-myLinkedList.insert(1, 4);
+myLinkedList.prepend(1);
+myLinkedList.insert(2, 7);
+myLinkedList.remove(0);
+console.log(myLinkedList);
 console.log(myLinkedList.printList());
 console.log(myLinkedList.length);
