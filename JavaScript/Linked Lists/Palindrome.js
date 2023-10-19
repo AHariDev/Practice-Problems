@@ -24,3 +24,5 @@ var isPalindrome = function(head) {
     }
     return (arr.join('') == reverse(arr.join('')));
 };
+
+//Solution using O(1) space instead of O(n): https://leetcode.com/problems/palindrome-linked-list/solutions/499038/intuitive-javascript-solution/
