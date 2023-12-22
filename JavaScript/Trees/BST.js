@@ -108,6 +108,38 @@ class BinarySearchTree{
             }
         }
     }
+    breadthFirstSearch(){
+        let currNode = this.root; 
+        let list = []; //To store the result (the visited values/nodes)
+        let queue = []; //Queue to keep track of the level that we're at to access children
+        queue.push(currNode);
+
+        while(queue.length){
+            currNode = queue.shift();
+            list.push(currNode.value);
+            if(currNode.left){ //Is there a left child
+                queue.push(currNode.left);
+            }
+            if(currNode.right){ //Is there a right child
+                queue.push(currNode.right); 
+            }
+        }
+        return list; //Returns a list of all the traversed nodes
+    }
+    breadthFirstSearchRecursive(queue, list){ //Note: BFS is usually implemented iteratively
+        if(!queue.length){
+            return list;
+        }
+        let currNode = queue.shift();
+        list.push(currNode.value);
+        if(currNode.left){ //Is there a left child
+            queue.push(currNode.left);
+        }
+        if(currNode.right){ //Is there a right child
+            queue.push(currNode.right); 
+        }
+        return this.breadthFirstSearchRecursive(queue, list);
+    }
 }
 
 const tree = new BinarySearchTree();
@@ -120,6 +152,8 @@ tree.insert(15);
 tree.insert(1);
 console.log(JSON.stringify(traverse(tree.root)));
 console.log(tree.lookup(173)); //Returns false as expected
+console.log(tree.breadthFirstSearch());
+console.log(tree.breadthFirstSearchRecursive([tree.root], []));
 
 function traverse(node){
     const tree = { value : node.value }; 
